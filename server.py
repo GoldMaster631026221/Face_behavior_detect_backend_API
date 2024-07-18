@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
-#####################################
+######################################
 
 # Read user list from JSON file
 with open('users.json') as f:
