@@ -49,7 +49,7 @@ def eraseFolder():
     for folder in folders:
         shutil.rmtree(folder)
 
-def folder_download(video_link):
+def google_folder_download(video_link):
     gdown.download_folder(video_link, quiet=False)
     folders = [f for f in os.listdir('.') if os.path.isdir(f) and '.' not in f and 'facial_api' not in f and 'image_caption' not in f and 'venv' not in f ]
     os.rename(folders[0], "My_Folder")
@@ -61,7 +61,7 @@ def other_download(video_link):
     gdown.download(video_link, filename,fuzzy = True)
     return "Ok"
     
-def sharepoint_download(video_link):
+def sharepoint_file_download(video_link):
     response = requests.get(video_link)
 
     if response.status_code == 200:
@@ -84,10 +84,10 @@ def sharepoint_download(video_link):
     
 def download_files(video_link):
     if ("folders" in video_link):
-        folder_download(video_link)
+        google_folder_download(video_link)
         return "downloaded"
     elif ("sharepoint" in video_link):
-        sharepoint_download(video_link)
+        sharepoint_file_download(video_link)
         return "Sharepoint"
     else:
         other_download(video_link)
