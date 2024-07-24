@@ -10,6 +10,10 @@ import shutil
 import requests
 from bs4 import BeautifulSoup
 
+from quantum_onedrive_Folder_latest_P import onedrive_folder_download
+from quantum_onedrive_file_latest_P import onedrive_file_download
+from quantum_sharepoint_folder_latest_P import sharepoint_folder_download
+
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 ######################################
@@ -35,14 +39,7 @@ def authenticate():
     except:
         return False
     return False 
-# import os
 
-# def list_folders_in_current_directory():
-#     folders = [f for f in os.listdir('.') if os.path.isdir(f) and '.' not in f and 'facial_api' not in f and 'image_caption' not in f]
-#     return folders
-
-# folders = list_folders_in_current_directory()
-# print(folders)
 
 def eraseFolder():
     folders = [f for f in os.listdir('.') if os.path.isdir(f) and '.' not in f and 'facial_api' not in f and 'image_caption' not in f and 'venv' not in f ]
@@ -83,12 +80,21 @@ def sharepoint_file_download(video_link):
     
     
 def download_files(video_link):
-    if ("folders" in video_link):
+    if ("folders" in video_link and "google" in video_link and "drive" in video_link):
         google_folder_download(video_link)
         return "downloaded"
-    elif ("sharepoint" in video_link):
+    elif ("sharepoint" in video_link and ":v:" in video_link and "idinnovsas" in video_link):
         sharepoint_file_download(video_link)
         return "Sharepoint"
+    elif ("1drv.ms" in video_link and "/f/" in video_link):
+        onedrive_folder_download(video_link)
+        return "OneDrive Folder"
+    elif ("1drv.ms" in video_link and "/v/" in video_link):
+        onedrive_file_download(video_link)
+        return "OneDrive Folder"
+    elif ("idinnovsa" in video_link and "/:f:/" in video_link and "sharepoint" in video_link):
+        sharepoint_folder_download(video_link)
+        return "OneDrive Folder"
     else:
         other_download(video_link)
         return "Other"
@@ -114,20 +120,6 @@ def facial_video_api():
 
     return results
 
-
-
-# @app.route('/api/facial_emotion_link', methods=['POST'])
-# def facial_link_api():  
-#     if not authenticate():
-#         return Response('Unauthorized', status=401, headers={'WWW-Authenticate': 'Basic realm="Login Required"'})  
-    
-#     data = request.get_json()
-#     video_link = data['videoLink']
-#     app.logger.info(video_link)
-#     filename = 'video.mp4'
-#     gdown.download(video_link, filename,fuzzy = True)
-#     result = main_facial_api('video.mp4', 1, 5)
-#     return result
 
 @app.route('/api/facial_emotion_link', methods=['POST'])
 def facial_link_api():  
